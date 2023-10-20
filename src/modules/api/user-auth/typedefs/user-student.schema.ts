@@ -1,31 +1,21 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument, Document } from "mongoose";
-import { UserRoles } from "src/shared/constants/enums/user-roles.enum";
+import mongoose, { HydratedDocument, Document } from "mongoose";
+import { TransformDocumentId } from "src/shared/constants/objects/document-transform.object";
+import { Courses } from "./courses.schema";
+import { User } from "./user.schema";
 
 export type UserStudentType = HydratedDocument<UserStudent>
 
 @Schema({
-    toJSON: {
-        virtuals: true,
-        transform: (doc, ret) => {
-            const { _id, __v, ...ret$ } = ret;
-            return { ...ret$, id: ret._id };
-        }
-    },
-    collection: 'user-students'
+    toJSON: TransformDocumentId, collection: 'user-students'
 })
 export class UserStudent extends Document {
-    @Prop({ required: true })
-    fullName: string;
 
-    @Prop({ unique: true })
-    email: string;
-
-    @Prop({ required: true })
-    password: string;
-
-    @Prop({ required: true })
-    role: UserRoles
+    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'users' })
+    userId: User;
+    
+    @Prop({ type: Array<mongoose.Schema.Types.ObjectId>, ref: 'courses' })
+    enrolledCourses: Array<Courses>;
 
 }
 

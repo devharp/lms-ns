@@ -4,22 +4,24 @@ import { AppService } from './app.service';
 import { ApiModule } from './modules/api/api.module';
 import { RouterModule } from '@nestjs/core';
 import { UserAuthModule } from './modules/api/user-auth/user-auth.module';
-import { hasSubscribers } from 'diagnostics_channel';
 import { MongooseModule } from '@nestjs/mongoose';
+import { LmsDatabaseModule } from './modules/lms-database/lms-database.module';
 
 @Module({
   imports: [
     ApiModule,
     UserAuthModule,
+    LmsDatabaseModule,
     RouterModule.register([
       {
         path: 'api', module: ApiModule,
         children: [
-          { path: 'user-auth', module: UserAuthModule }
+          { path: 'user-auth', module: UserAuthModule },
+          { path: 'get-data', module: LmsDatabaseModule },
         ]
       }
     ]),
-    MongooseModule.forRoot('mongodb://localhost/lms')
+    MongooseModule.forRoot('mongodb://localhost/lms'),
   ],
   controllers: [AppController],
   providers: [AppService],

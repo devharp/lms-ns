@@ -2,7 +2,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { HydratedDocument, Document } from "mongoose";
 import { TransformDocumentId } from "src/shared/constants/objects/document-transform.object";
 import { Courses } from "./courses.schema";
-import { User } from "./user.schema";
 
 export type UserStudentType = HydratedDocument<UserStudent>
 
@@ -11,8 +10,8 @@ export type UserStudentType = HydratedDocument<UserStudent>
 })
 export class UserStudent extends Document {
 
-    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'users' })
-    userId: User;
+    @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    user: mongoose.Types.ObjectId;
     
     @Prop({ type: Array<mongoose.Schema.Types.ObjectId>, ref: 'courses' })
     enrolledCourses: Array<Courses>;

@@ -1,13 +1,10 @@
-import { ArgumentsHost, Body, Catch, Controller, ExceptionFilter, Get, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserAuthRegisterDTO } from './typedefs/register-payload.dto';
 import { validationPipe } from 'src/pipes/validation.pipe';
 import { UserAuthService } from './user-auth.service';
-import { GlobalExceptionFilter } from 'src/pipes/exception.filter';
-import { MongoServerError } from 'mongodb';
 
 @Controller('')
 export class UserAuthController {
-
 
     constructor(private userAuthService: UserAuthService) { }
 

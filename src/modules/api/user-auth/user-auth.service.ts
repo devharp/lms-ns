@@ -16,20 +16,17 @@ export class UserAuthService {
 
     public async registerUser(userPayload: UserAuthRegisterDTO): Promise<void> {
 
-        const user = new this.userModel(userPayload as unknown as UserType);
-        await user.save();
+        const { id: user } = await this.userModel.create(userPayload as unknown as UserType)
 
         switch (userPayload.role) {
             case UserRoles.FACULTY:
-                console.error('user-auth.service.ts: not handled yet for ROLE "FACULTY"!')
+                console.error('user-auth.service.ts: not handled yet for ROLE "FACULTY"!');
                 break;
             case UserRoles.STUDENT:
-                console.log(user);
+                await this.userStudentModel.create({ user, enrolledCourses: [] })
                 break;
             default:
                 break;
         }
-
-
     }
 }

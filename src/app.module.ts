@@ -6,6 +6,8 @@ import { RouterModule } from '@nestjs/core';
 import { UserAuthModule } from './modules/api/user-auth/user-auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LmsDatabaseModule } from './modules/lms-database/lms-database.module';
+import { AppJwtModule } from './app-jwt/app-jwt.module';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -22,8 +24,10 @@ import { LmsDatabaseModule } from './modules/lms-database/lms-database.module';
       }
     ]),
     MongooseModule.forRoot('mongodb://localhost/lms'),
+    AppJwtModule,
+
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [JwtStrategy, AppService],
 })
 export class AppModule {}

@@ -9,8 +9,8 @@ export class UserAuthController {
     constructor(private userAuthService: UserAuthService) { }
 
     @Get('login')
-    userLogin(): string {
-        return "user login"
+    userLogin(): Array<string> {
+        return ["user login"]
     }
 
     @Post('register')

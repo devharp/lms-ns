@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ApiModule } from './modules/api/api.module';
-import { RouterModule } from '@nestjs/core';
+import { APP_GUARD, RouterModule } from '@nestjs/core';
 import { UserAuthModule } from './modules/api/user-auth/user-auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { LmsDatabaseModule } from './modules/lms-database/lms-database.module';
@@ -24,10 +24,10 @@ import { JwtStrategy } from './strategy/jwt.strategy';
       }
     ]),
     MongooseModule.forRoot('mongodb://localhost/lms'),
-    AppJwtModule,
+    AppJwtModule
 
   ],
   controllers: [AppController],
   providers: [JwtStrategy, AppService],
 })
-export class AppModule {}
+export class AppModule { }

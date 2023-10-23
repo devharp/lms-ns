@@ -4,6 +4,9 @@ import { validationPipe } from './pipes/validation.pipe';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { AuthGuard } from '@nestjs/passport';
 import { AppJwtService } from './app-jwt/app-jwt.service';
+import { Roles } from './guards/roles.decorator';
+import { RoleGuard } from './guards/roles.guard';
+import { Role } from './guards/roles.enum';
 
 
 class UserData {
@@ -27,9 +30,10 @@ export class AppController {
   }
 
   @Get('secure-test')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
+  @Roles(Role.STUDENT)
   public secureTest(): string {
-    return "Working"
+    return "secure test working"
   }
 
   @Get('jwt-test')

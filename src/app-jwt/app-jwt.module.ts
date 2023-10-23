@@ -5,9 +5,7 @@ import { PassportModule } from '@nestjs/passport';
 
 @Module({
     imports: [
-        JwtModule.register({
-            secret: 'lms', signOptions: { expiresIn: '1d' }
-        }),
+        JwtModule.register({ secret: 'lms', signOptions: { expiresIn: '1d' } }),
         PassportModule
     ],
     providers: [AppJwtService],

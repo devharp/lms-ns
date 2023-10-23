@@ -14,9 +14,9 @@ export class UserAuthController {
     }
 
     @Post('register')
-    async userRegister(@Body(validationPipe) userRegisterPayload: UserAuthRegisterDTO): Promise<string> {
+    async userRegister(@Body(validationPipe) userRegisterPayload: UserAuthRegisterDTO): Promise<Array<string>> {
         await this.userAuthService.registerUser(userRegisterPayload);
-        return "user register"
+        return ["user registered"]
     }
 
 }

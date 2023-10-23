@@ -1,4 +1,4 @@
-import { Catch, ArgumentsHost, HttpException, ExceptionFilter } from '@nestjs/common';
+import { Catch, ArgumentsHost, HttpException, ExceptionFilter, BadRequestException } from '@nestjs/common';
 import { MongoServerError } from 'mongodb';
 
 @Catch()
@@ -8,13 +8,24 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
-    if (exception instanceof HttpException) {
+
+    if (exception instanceof BadRequestException) {
+      const { message } = (exception.getResponse() as unknown as Record<string, { message: Array<string> }>)
+
       // Handle HTTP exceptions (e.g., 404, 500)
       response.status(exception.getStatus()).json({
         statusCode: exception.getStatus(),
         timestamp: new Date().toISOString(),
         path: request.url,
-        message: exception.message,
+        message
+      });
+    } else if (exception instanceof HttpException) {
+      // Handle HTTP exceptions (e.g., 404, 500)
+      response.status(exception.getStatus()).json({
+        statusCode: exception.getStatus(),
+        timestamp: new Date().toISOString(),
+        path: request.url,
+        message: [exception.message],
       });
     } else if (exception instanceof MongoServerError) {
         // Handle MongoDB duplicate key errors
@@ -22,7 +33,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
           statusCode: 409,
           timestamp: new Date().toISOString(),
           path: request.url,
-          message: 'Duplicate key error: This record already exists.',
+          message: ['Duplicate key error: This record already exists.'],
         }); 
     } else {
       // Handle other exceptions (e.g., application-specific errors)
@@ -30,7 +41,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         statusCode: 500,
         timestamp: new Date().toISOString(),
         path: request.url,
-        message: 'Internal Server Error',
+        message: ['Internal Server Error'],
       });
     }
   }

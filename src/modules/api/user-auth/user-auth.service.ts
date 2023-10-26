@@ -20,6 +20,7 @@ export class UserAuthService {
 
     switch (userPayload.role) {
       case UserRoles.FACULTY:
+        console.log('test');
         break;
       case UserRoles.STUDENT:
         await this.userStudentModel.create({ user, enrolledCourses: [] });

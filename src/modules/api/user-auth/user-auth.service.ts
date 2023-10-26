@@ -8,25 +8,24 @@ import { UserStudent } from './typedefs/user-student.schema';
 
 @Injectable()
 export class UserAuthService {
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(UserStudent.name) private userStudentModel: Model<UserStudent>,
+  ) {}
 
-    constructor(
-        @InjectModel(User.name) private userModel: Model<User>,
-        @InjectModel(UserStudent.name) private userStudentModel: Model<UserStudent>
-    ) { }
+  public async registerUser(userPayload: UserAuthRegisterDTO): Promise<void> {
+    const { id: user } = await this.userModel.create(
+      userPayload as unknown as UserType,
+    );
 
-    public async registerUser(userPayload: UserAuthRegisterDTO): Promise<void> {
-
-        const { id: user } = await this.userModel.create(userPayload as unknown as UserType)
-
-        switch (userPayload.role) {
-            case UserRoles.FACULTY:
-                console.error('user-auth.service.ts: not handled yet for ROLE "FACULTY"!');
-                break;
-            case UserRoles.STUDENT:
-                await this.userStudentModel.create({ user, enrolledCourses: [] })
-                break;
-            default:
-                break;
-        }
+    switch (userPayload.role) {
+      case UserRoles.FACULTY:
+        break;
+      case UserRoles.STUDENT:
+        await this.userStudentModel.create({ user, enrolledCourses: [] });
+        break;
+      default:
+        break;
     }
+  }
 }

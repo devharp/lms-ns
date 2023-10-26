@@ -5,21 +5,18 @@ import { UserAuthService } from './user-auth.service';
 
 @Controller('')
 export class UserAuthController {
+  constructor(private userAuthService: UserAuthService) {}
 
-    constructor(private userAuthService: UserAuthService) { }
+  @Get('login')
+  userLogin(): Array<string> {
+    return ['user login'];
+  }
 
-    @Get('login')
-    userLogin(): Array<string> {
-        return ["user login"]
-    }
-
-    @Post('register')
-    async userRegister(@Body(validationPipe) userRegisterPayload: UserAuthRegisterDTO): Promise<Array<string>> {
-        await this.userAuthService.registerUser(userRegisterPayload);
-        return ["user registered"]
-    }
-
+  @Post('register')
+  async userRegister(
+    @Body(validationPipe) userRegisterPayload: UserAuthRegisterDTO,
+  ): Promise<Array<string>> {
+    await this.userAuthService.registerUser(userRegisterPayload);
+    return ['user registered'];
+  }
 }
-
-
-

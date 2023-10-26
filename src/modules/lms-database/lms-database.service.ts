@@ -6,18 +6,17 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class LmsDatabaseService {
-    constructor(
-        @InjectModel(User.name) private userModel: Model<User>,
-        @InjectModel(UserStudent.name) private userStudentModel: Model<UserStudent>
-    ) { }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(UserStudent.name) private userStudentModel: Model<UserStudent>,
+  ) {}
 
-    async findAllUserStudents(skip: number, limit: number) {
-        return this.userStudentModel
-        .find()
-        .skip(skip)
-        .limit(limit)
-        .populate('user')
-        .exec()
-    }
-
+  async findAllUserStudents(skip: number, limit: number) {
+    return this.userStudentModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .populate('user')
+      .exec();
+  }
 }

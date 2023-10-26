@@ -1,4 +1,0 @@
-#!/bin/sh
-. "$(npm bin)/husky-run"
-
-npx lint-staged
